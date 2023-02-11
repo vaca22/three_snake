@@ -84,6 +84,8 @@
 			var f_length=20;
 			var f_vector= new Vector3(0,0,f_length);
 			var f_move=new Vector3(0,0,-20);
+			var f_cube_number = 5
+			var f_change_index=4;
 
 
 
@@ -271,7 +273,8 @@
 
 			var prevTime2 = performance.now();
 			function move_snake0(){
-				let box=objects.at(0)
+
+				let box=objects.at(f_change_index)
 				box.position.x += f_move.x;
 				box.position.y += f_move.y;
 				box.position.z += f_move.z;
@@ -280,23 +283,19 @@
 
 			function move_snake1(){
 				y_angle+=Math.PI/2
-				let f=f_vector.clone().applyMatrix3(Ryz(y_angle))
-				f_move=f
+				f_move=f_vector.clone().applyMatrix3(Ryz(y_angle))
 			}
 			function move_snake2(){
 				y_angle-=Math.PI/2
-				let f=f_vector.clone().applyMatrix3(Ryz(y_angle))
-				f_move=f
+				f_move=f_vector.clone().applyMatrix3(Ryz(y_angle))
 			}
 			function move_snake3(){
 				x_angle+=Math.PI/2
-				let f=f_vector.clone().applyMatrix3(Rxz(x_angle))
-				f_move=f
+				f_move=f_vector.clone().applyMatrix3(Rxz(x_angle))
 			}
 			function move_snake4(){
 				x_angle-=Math.PI/2
-				let f=f_vector.clone().applyMatrix3(Rxz(x_angle))
-				f_move=f
+				f_move=f_vector.clone().applyMatrix3(Rxz(x_angle))
 			}
 
 
