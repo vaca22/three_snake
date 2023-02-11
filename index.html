@@ -79,8 +79,8 @@
 			let rotateLeft = false;
 			let rotateRight = false;
 
-			var x_angle=0;
-			var y_angle=0;
+			var x_angle=-Math.PI;
+			var y_angle=-Math.PI;
 			var f_length=20;
 			var f_vector= new Vector3(0,0,f_length);
 			var f_move=new Vector3(0,0,-20);
@@ -219,7 +219,7 @@
 
 							break;
 						case 'KeyW':
-							move_snake1()
+							move_snake2()
 							moveForward = false;
 							break;
 
@@ -237,7 +237,7 @@
 
 							break;
 						case 'KeyS':
-							move_snake2()
+							move_snake1()
 							moveBackward = false;
 							break;
 
@@ -266,12 +266,12 @@
 				var position = boxGeometry.attributes.position;
 				const colorsBox = [];
 
-				const color1 = new THREE.Color( 0xfd0466 );
-				const color2 = new THREE.Color( 0x12fb51 );
-				const color3 = new THREE.Color( 0x54da9a );
-				const color4 = new THREE.Color( 0x8f50b9 );
-				const color5 = new THREE.Color( 0x239502 );
-				const color6 = new THREE.Color( 0x4e3b2e );
+				const color1 = new THREE.Color( 0xff0000 );
+				const color2 = new THREE.Color( 0x00ff00 );
+				const color3 = new THREE.Color( 0x0000ff );
+				const color4 = new THREE.Color( 0x00ffff );
+				const color5 = new THREE.Color( 0xff00ff );
+				const color6 = new THREE.Color( 0xffff00 );
 				var color_array=[color1,color2,color3,color4,color5,color6];
 
 				for ( let i = 0, l = position.count; i < l; i ++ ) {
@@ -326,30 +326,25 @@
 			function move_snake1(){
 				y_angle+=Math.PI/2
 				let f=f_vector.clone().applyMatrix3(Ryz(y_angle))
-				let box=objects.at(0)
 				f_move=f
 			}
 			function move_snake2(){
 				y_angle-=Math.PI/2
 				let f=f_vector.clone().applyMatrix3(Ryz(y_angle))
-				let box=objects.at(0)
 				f_move=f
 			}
 			function move_snake3(){
 				x_angle+=Math.PI/2
 				let f=f_vector.clone().applyMatrix3(Rxz(x_angle))
-				let box=objects.at(0)
 				f_move=f
 			}
 			function move_snake4(){
 				x_angle-=Math.PI/2
 				let f=f_vector.clone().applyMatrix3(Rxz(x_angle))
-				let box=objects.at(0)
 				f_move=f
 			}
 
 
-			var direction_move=1;
 
 			function animate() {
 
@@ -358,15 +353,6 @@
 				const time = performance.now();
 				if(time-prevTime2>1000){
 					move_snake0()
-					// if(direction_move===1){
-					// 	move_snake1();
-					// }else if(direction_move===2) {
-					// 	move_snake2();
-					// }else if(direction_move===3) {
-					// 	move_snake3();
-					// }else if(direction_move===4) {
-					// 	move_snake4();
-					// }
 					prevTime2=time;
 				}
 
@@ -394,28 +380,7 @@
 					// if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
 					// if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
 
-					if(moveForward){
-						direction_move=1;
-					}
-					if(moveBackward){
-						direction_move=2;
-					}
-					if(moveLeft){
-						direction_move=4;
-					}
-					if(moveRight){
-						direction_move=3;
-					}
 
-					// if(direction_move===1){
-					// 	move_snake1();
-					// }else if(direction_move===2) {
-					// 	move_snake2();
-					// }else if(direction_move===3) {
-					// 	move_snake3();
-					// }else if(direction_move===4) {
-					// 	move_snake4();
-					// }
 
 					if ( onObject === true ) {
 
