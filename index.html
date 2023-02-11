@@ -55,7 +55,9 @@
 		<script type="module">
 
 			import * as THREE from 'three';
-
+			import {
+				Euler,
+			} from 'three';
 			import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
 			let camera, scene, renderer, controls;
@@ -294,14 +296,14 @@
 
 				}
 
-				//
+
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
 
-				//
+
 
 				window.addEventListener( 'resize', onWindowResize );
 
@@ -315,9 +317,7 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
 			}
-			import {
-				Euler,
-			} from 'three';
+
 			function animate() {
 
 				requestAnimationFrame( animate );
