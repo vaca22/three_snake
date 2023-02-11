@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>snake</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="main.css">
+</head>
+<body>
+
+
+
+<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+
+</script>
+
+<script type="module">
+
+    import * as THREE from 'three';
+    import {
+        Euler,
+    } from 'three';
+    import {PointerLockControls} from './jsm/controls/PointerLockControls.js';
+    import {Matrix3} from "three";
+    import {Vector3} from "three";
+    init();
+    function Rxz(theta){
+        let m = new Matrix3();
+        m.set(Math.cos(theta),0,Math.sin(theta),0,1,0,-Math.sin(theta),0,Math.cos(theta));
+        return m;
+    }
+
+
+    function Rxy(theta){
+        let m = new Matrix3();
+        m.set(Math.cos(theta),Math.sin(theta),0,-Math.sin(theta),Math.cos(theta),0,0,0,1);
+        return m
+    }
+
+
+    function Ryz(theta){
+        let m = new Matrix3();
+        m.set(1,0,0,0,Math.cos(theta),Math.sin(theta),0,-Math.sin(theta),Math.cos(theta));
+        return m
+    }
+
+    function init() {
+        const m = Rxz(-Math.PI/2);
+
+        console.log(m.elements)
+
+        let a = new Vector3( 0, 0, 1 );
+        console.log(a.x, a.y, a.z);
+        a.applyMatrix3(m);
+        console.log(a.x, a.y, a.z);
+
+        let bb=Math.sin(Math.PI/2)
+        console.log(bb)
+    }
+</script>
+</body>
+</html>

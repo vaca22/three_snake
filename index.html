@@ -59,6 +59,7 @@
 				Euler,
 			} from 'three';
 			import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
+			import {Vector3,Matrix3} from "three";
 
 			let camera, scene, renderer, controls;
 
@@ -78,7 +79,11 @@
 			let rotateLeft = false;
 			let rotateRight = false;
 
-
+			var x_angle=0;
+			var y_angle=0;
+			var f_length=20;
+			var f_vector= new Vector3(0,0,f_length);
+			var f_move=new Vector3(0,0,-20);
 
 
 
@@ -93,6 +98,30 @@
 
 			init();
 			animate();
+
+
+			function Rxz(theta){
+				let m = new Matrix3();
+				m.set(Math.cos(theta),0,Math.sin(theta),0,1,0,-Math.sin(theta),0,Math.cos(theta));
+				return m;
+			}
+
+
+			function Rxy(theta){
+				let m = new Matrix3();
+				m.set(Math.cos(theta),Math.sin(theta),0,-Math.sin(theta),Math.cos(theta),0,0,0,1);
+				return m
+			}
+
+
+			function Ryz(theta){
+				let m = new Matrix3();
+				m.set(1,0,0,0,Math.cos(theta),Math.sin(theta),0,-Math.sin(theta),Math.cos(theta));
+				return m
+			}
+
+
+
 
 			function init() {
 
@@ -185,10 +214,12 @@
 					switch ( event.code ) {
 
 						case 'ArrowUp':
+
 							rotateUp= false;
 
 							break;
 						case 'KeyW':
+							move_snake1()
 							moveForward = false;
 							break;
 
@@ -197,6 +228,7 @@
 
 							break;
 						case 'KeyA':
+							move_snake3()
 							moveLeft = false;
 							break;
 
@@ -205,6 +237,7 @@
 
 							break;
 						case 'KeyS':
+							move_snake2()
 							moveBackward = false;
 							break;
 
@@ -213,6 +246,7 @@
 
 							break;
 						case 'KeyD':
+							move_snake4()
 							moveRight = false;
 							break;
 
@@ -225,51 +259,11 @@
 
 				raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
-				// floor
 
-				let floorGeometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
-				floorGeometry.rotateX( - Math.PI / 2 );
 
-				// vertex displacement
+				const boxGeometry = new THREE.BoxGeometry( f_length, f_length, f_length ).toNonIndexed();
 
-				let position = floorGeometry.attributes.position;
-
-				for ( let i = 0, l = position.count; i < l; i ++ ) {
-
-					vertex.fromBufferAttribute( position, i );
-
-					vertex.x += Math.random() * 20 - 10;
-					vertex.y += Math.random() * 2;
-					vertex.z += Math.random() * 20 - 10;
-
-					position.setXYZ( i, vertex.x, vertex.y, vertex.z );
-
-				}
-
-				floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
-
-				position = floorGeometry.attributes.position;
-				const colorsFloor = [];
-
-				for ( let i = 0, l = position.count; i < l; i ++ ) {
-
-					color.setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-					colorsFloor.push( color.r, color.g, color.b );
-
-				}
-
-				floorGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colorsFloor, 3 ) );
-
-				const floorMaterial = new THREE.MeshBasicMaterial( { vertexColors: true } );
-
-				const floor = new THREE.Mesh( floorGeometry, floorMaterial );
-				// scene.add( floor );
-
-				// objects
-
-				const boxGeometry = new THREE.BoxGeometry( 20, 20, 20 ).toNonIndexed();
-
-				position = boxGeometry.attributes.position;
+				var position = boxGeometry.attributes.position;
 				const colorsBox = [];
 
 				const color1 = new THREE.Color( 0xfd0466 );
@@ -279,10 +273,10 @@
 				const color5 = new THREE.Color( 0x239502 );
 				const color6 = new THREE.Color( 0x4e3b2e );
 				var color_array=[color1,color2,color3,color4,color5,color6];
-				console.log(position.count+"fuck");
+
 				for ( let i = 0, l = position.count; i < l; i ++ ) {
 					let index=parseInt(i/6,10)
-					console.log(index);
+
 					let colorx=color_array[index];
 					colorsBox.push( colorx.r,colorx.g,colorx.b );
 				}
@@ -290,18 +284,14 @@
 				boxGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colorsBox, 3 ) );
 
 				for ( let i = 0; i < 1; i ++ ) {
-
 					const boxMaterial = new THREE.MeshPhongMaterial( { specular: 0xffffff, flatShading: true, vertexColors: true } );
 					boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-
 					const box = new THREE.Mesh( boxGeometry, boxMaterial );
-					box.position.x = Math.floor(0 ) * 20;
-					box.position.y = Math.floor( 0 ) * 20 + 10;
-					box.position.z = Math.floor( 0 - 10 ) * 20;
-
+					box.position.x = 20;
+					box.position.y = 20;
+					box.position.z = - 10  * 20;
 					scene.add( box );
 					objects.push( box );
-
 				}
 
 
@@ -325,32 +315,39 @@
 			}
 
 			var prevTime2 = performance.now();
+			function move_snake0(){
+				let box=objects.at(0)
+				box.position.x += f_move.x;
+				box.position.y += f_move.y;
+				box.position.z += f_move.z;
 
+			}
 
 			function move_snake1(){
+				y_angle+=Math.PI/2
+				let f=f_vector.clone().applyMatrix3(Ryz(y_angle))
 				let box=objects.at(0)
-				box.position.z -= 20;
+				f_move=f
 			}
 			function move_snake2(){
+				y_angle-=Math.PI/2
+				let f=f_vector.clone().applyMatrix3(Ryz(y_angle))
 				let box=objects.at(0)
-				box.position.z += 20;
+				f_move=f
 			}
 			function move_snake3(){
+				x_angle+=Math.PI/2
+				let f=f_vector.clone().applyMatrix3(Rxz(x_angle))
 				let box=objects.at(0)
-				box.position.x += 20;
+				f_move=f
 			}
 			function move_snake4(){
+				x_angle-=Math.PI/2
+				let f=f_vector.clone().applyMatrix3(Rxz(x_angle))
 				let box=objects.at(0)
-				box.position.x -= 20;
+				f_move=f
 			}
-			function move_snake5(){
-				let box=objects.at(0)
-				box.position.y += 20;
-			}
-			function move_snake6(){
-				let box=objects.at(0)
-				box.position.y -= 20;
-			}
+
 
 			var direction_move=1;
 
@@ -360,15 +357,16 @@
 
 				const time = performance.now();
 				if(time-prevTime2>1000){
-					if(direction_move===1){
-						move_snake1();
-					}else if(direction_move===2) {
-						move_snake2();
-					}else if(direction_move===3) {
-						move_snake3();
-					}else if(direction_move===4) {
-						move_snake4();
-					}
+					move_snake0()
+					// if(direction_move===1){
+					// 	move_snake1();
+					// }else if(direction_move===2) {
+					// 	move_snake2();
+					// }else if(direction_move===3) {
+					// 	move_snake3();
+					// }else if(direction_move===4) {
+					// 	move_snake4();
+					// }
 					prevTime2=time;
 				}
 
@@ -409,6 +407,15 @@
 						direction_move=3;
 					}
 
+					// if(direction_move===1){
+					// 	move_snake1();
+					// }else if(direction_move===2) {
+					// 	move_snake2();
+					// }else if(direction_move===3) {
+					// 	move_snake3();
+					// }else if(direction_move===4) {
+					// 	move_snake4();
+					// }
 
 					if ( onObject === true ) {
 
