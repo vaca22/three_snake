@@ -281,7 +281,7 @@
 
 				boxGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colorsBox, 3 ) );
 
-				for ( let i = 0; i < 5; i ++ ) {
+				for ( let i = 0; i < 1; i ++ ) {
 
 					const boxMaterial = new THREE.MeshPhongMaterial( { specular: 0xffffff, flatShading: true, vertexColors: true } );
 					boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
@@ -298,6 +298,7 @@
 
 
 
+
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
@@ -310,12 +311,17 @@
 			}
 
 			function onWindowResize() {
-
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
-
 				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
 
+			var prevTime2 = performance.now();
+
+
+			function move_snake(){
+				let box=objects.at(0)
+				box.position.x += 20;
 			}
 
 			function animate() {
@@ -323,6 +329,11 @@
 				requestAnimationFrame( animate );
 
 				const time = performance.now();
+				if(time-prevTime2>1000){
+					move_snake();
+					prevTime2=time;
+				}
+
 
 				if ( controls.isLocked === true ) {
 
@@ -367,7 +378,7 @@
 						canJump = true;
 
 					}
-
+					controls.getObject().position.y = 200;
 					_euler.setFromQuaternion( camera.quaternion );
 
 					if(rotateUp){
