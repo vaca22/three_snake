@@ -163,51 +163,6 @@
 
 				scene.add( controls.getObject() );
 
-				const onKeyDown = function ( event ) {
-
-					console.log(event.code);
-					switch ( event.code ) {
-
-						case 'ArrowUp':
-							rotateUp= true;
-
-							break;
-						case 'KeyW':
-							moveForward = true;
-							break;
-
-						case 'ArrowLeft':
-							rotateLeft = true;
-
-							break;
-						case 'KeyA':
-							moveLeft = true;
-							break;
-
-						case 'ArrowDown':
-							rotateDown = true;
-
-							break;
-						case 'KeyS':
-							moveBackward = true;
-							break;
-
-						case 'ArrowRight':
-							rotateRight = true;
-
-							break;
-						case 'KeyD':
-							moveRight = true;
-							break;
-
-						case 'Space':
-							if ( canJump === true ) velocity.y += 350;
-							canJump = false;
-							break;
-
-					}
-
-				};
 
 				const onKeyUp = function ( event ) {
 
@@ -254,7 +209,7 @@
 
 				};
 
-				document.addEventListener( 'keydown', onKeyDown );
+
 				document.addEventListener( 'keyup', onKeyUp );
 
 				raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
@@ -283,13 +238,13 @@
 
 				boxGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colorsBox, 3 ) );
 
-				for ( let i = 0; i < 1; i ++ ) {
+				for ( let i = 0; i < 5; i ++ ) {
 					const boxMaterial = new THREE.MeshPhongMaterial( { specular: 0xffffff, flatShading: true, vertexColors: true } );
 					boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
 					const box = new THREE.Mesh( boxGeometry, boxMaterial );
 					box.position.x = 20;
 					box.position.y = 20;
-					box.position.z = - 10  * 20;
+					box.position.z = - 200+i*20;
 					scene.add( box );
 					objects.push( box );
 				}
