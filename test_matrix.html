@@ -28,13 +28,19 @@
     } from 'three';
     import {PointerLockControls} from './jsm/controls/PointerLockControls.js';
     import {Matrix3} from "three";
+    import {Vector3} from "three";
     init();
     function init() {
         const m = new Matrix3();
-        m.set(11, 12, 13,
-            21, 22, 23,
-            31, 32, 33);
+        m.set(0, 0, -1,
+            0, 1, 0,
+            1, 0, 0);
         console.log(m.elements)
+
+        let a = new Vector3( 0, 0, 1 );
+        console.log(a.x, a.y, a.z);
+        a.applyMatrix3(m);
+        console.log(a.x, a.y, a.z);
     }
 </script>
 </body>
