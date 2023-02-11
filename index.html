@@ -272,11 +272,19 @@
 				position = boxGeometry.attributes.position;
 				const colorsBox = [];
 
+				const color1 = new THREE.Color( 0xfd0466 );
+				const color2 = new THREE.Color( 0x12fb51 );
+				const color3 = new THREE.Color( 0x54da9a );
+				const color4 = new THREE.Color( 0x8f50b9 );
+				const color5 = new THREE.Color( 0x239502 );
+				const color6 = new THREE.Color( 0x4e3b2e );
+				var color_array=[color1,color2,color3,color4,color5,color6];
+				console.log(position.count+"fuck");
 				for ( let i = 0, l = position.count; i < l; i ++ ) {
-
-					color.setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-					colorsBox.push( color.r, color.g, color.b );
-
+					let index=parseInt(i/6,10)
+					console.log(index);
+					let colorx=color_array[index];
+					colorsBox.push( colorx.r,colorx.g,colorx.b );
 				}
 
 				boxGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colorsBox, 3 ) );
@@ -287,9 +295,9 @@
 					boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
 
 					const box = new THREE.Mesh( boxGeometry, boxMaterial );
-					box.position.x = Math.floor( Math.random() * 6 - 10 ) * 20;
-					box.position.y = Math.floor( Math.random() * 6 ) * 20 + 10;
-					box.position.z = Math.floor( Math.random() * 6 - 10 ) * 20;
+					box.position.x = Math.floor(0 ) * 20;
+					box.position.y = Math.floor( 0 ) * 20 + 10;
+					box.position.z = Math.floor( 0 - 10 ) * 20;
 
 					scene.add( box );
 					objects.push( box );
@@ -321,7 +329,7 @@
 
 			function move_snake(){
 				let box=objects.at(0)
-				box.position.x += 20;
+				box.position.z -= 20;
 			}
 
 			function animate() {
@@ -378,7 +386,7 @@
 						canJump = true;
 
 					}
-					controls.getObject().position.y = 200;
+					controls.getObject().position.y = 50;
 					_euler.setFromQuaternion( camera.quaternion );
 
 					if(rotateUp){
