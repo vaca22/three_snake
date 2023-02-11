@@ -327,10 +327,24 @@
 			var prevTime2 = performance.now();
 
 
-			function move_snake(){
+			function move_snake1(){
 				let box=objects.at(0)
 				box.position.z -= 20;
 			}
+			function move_snake2(){
+				let box=objects.at(0)
+				box.position.z += 20;
+			}
+			function move_snake3(){
+				let box=objects.at(0)
+				box.position.x += 20;
+			}
+			function move_snake4(){
+				let box=objects.at(0)
+				box.position.x -= 20;
+			}
+
+			var direction_move=1;
 
 			function animate() {
 
@@ -338,7 +352,15 @@
 
 				const time = performance.now();
 				if(time-prevTime2>1000){
-					move_snake();
+					if(direction_move===1){
+						move_snake1();
+					}else if(direction_move===2) {
+						move_snake2();
+					}else if(direction_move===3) {
+						move_snake3();
+					}else if(direction_move===4) {
+						move_snake4();
+					}
 					prevTime2=time;
 				}
 
@@ -363,8 +385,22 @@
 					direction.x = Number( moveRight ) - Number( moveLeft );
 					direction.normalize(); // this ensures consistent movements in all directions
 
-					if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
-					if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
+					// if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
+					// if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
+
+					if(moveForward){
+						direction_move=1;
+					}
+					if(moveBackward){
+						direction_move=2;
+					}
+					if(moveLeft){
+						direction_move=4;
+					}
+					if(moveRight){
+						direction_move=3;
+					}
+
 
 					if ( onObject === true ) {
 
@@ -379,12 +415,9 @@
 					controls.getObject().position.y += ( velocity.y * delta ); // new behavior
 
 					if ( controls.getObject().position.y < 10 ) {
-
 						velocity.y = 0;
 						controls.getObject().position.y = 10;
-
 						canJump = true;
-
 					}
 					controls.getObject().position.y = 50;
 					_euler.setFromQuaternion( camera.quaternion );

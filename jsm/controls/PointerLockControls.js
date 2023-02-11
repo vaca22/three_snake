@@ -77,7 +77,7 @@ class PointerLockControls extends EventDispatcher {
 
 		this.connect = function () {
 
-			scope.domElement.ownerDocument.addEventListener( 'mousemove', onMouseMove );
+			// scope.domElement.ownerDocument.addEventListener( 'mousemove', onMouseMove );
 			scope.domElement.ownerDocument.addEventListener( 'pointerlockchange', onPointerlockChange );
 			scope.domElement.ownerDocument.addEventListener( 'pointerlockerror', onPointerlockError );
 
@@ -85,7 +85,7 @@ class PointerLockControls extends EventDispatcher {
 
 		this.disconnect = function () {
 
-			scope.domElement.ownerDocument.removeEventListener( 'mousemove', onMouseMove );
+			// scope.domElement.ownerDocument.removeEventListener( 'mousemove', onMouseMove );
 			scope.domElement.ownerDocument.removeEventListener( 'pointerlockchange', onPointerlockChange );
 			scope.domElement.ownerDocument.removeEventListener( 'pointerlockerror', onPointerlockError );
 
