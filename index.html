@@ -70,11 +70,24 @@
 			let moveRight = false;
 			let canJump = false;
 
+
+			let rotateUp = false;
+			let rotateDown = false;
+			let rotateLeft = false;
+			let rotateRight = false;
+
+
+
+
+
 			let prevTime = performance.now();
 			const velocity = new THREE.Vector3();
 			const direction = new THREE.Vector3();
 			const vertex = new THREE.Vector3();
 			const color = new THREE.Color();
+
+			const _euler = new Euler( 0, 0, 0, 'YXZ' );
+
 
 			init();
 			animate();
@@ -125,6 +138,7 @@
 					switch ( event.code ) {
 
 						case 'ArrowUp':
+							rotateUp= true;
 
 							break;
 						case 'KeyW':
@@ -132,6 +146,7 @@
 							break;
 
 						case 'ArrowLeft':
+							rotateLeft = true;
 
 							break;
 						case 'KeyA':
@@ -139,6 +154,7 @@
 							break;
 
 						case 'ArrowDown':
+							rotateDown = true;
 
 							break;
 						case 'KeyS':
@@ -146,6 +162,7 @@
 							break;
 
 						case 'ArrowRight':
+							rotateRight = true;
 
 							break;
 						case 'KeyD':
@@ -166,6 +183,7 @@
 					switch ( event.code ) {
 
 						case 'ArrowUp':
+							rotateUp= false;
 
 							break;
 						case 'KeyW':
@@ -173,6 +191,7 @@
 							break;
 
 						case 'ArrowLeft':
+							rotateLeft = false;
 
 							break;
 						case 'KeyA':
@@ -180,6 +199,7 @@
 							break;
 
 						case 'ArrowDown':
+							rotateDown = false;
 
 							break;
 						case 'KeyS':
@@ -187,6 +207,7 @@
 							break;
 
 						case 'ArrowRight':
+							rotateRight = false;
 
 							break;
 						case 'KeyD':
@@ -294,7 +315,11 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
 			}
-
+			import {
+				Euler,
+				EventDispatcher,
+				Vector3
+			} from 'three';
 			function animate() {
 
 				requestAnimationFrame( animate );
@@ -344,6 +369,29 @@
 						canJump = true;
 
 					}
+
+					_euler.setFromQuaternion( camera.quaternion );
+
+					if(rotateUp){
+						_euler.x +=  0.02 ;
+					}
+
+					if(rotateDown){
+						_euler.x -=  0.02 ;
+					}
+
+					if(rotateLeft){
+						_euler.y +=  0.02 ;
+					}
+					if(rotateRight){
+						_euler.y -=  0.02 ;
+					}
+					let minPolarAngle = 0; // radians
+					let maxPolarAngle = Math.PI; // radians
+					const _PI_2 = Math.PI / 2;
+					_euler.x = Math.max( _PI_2 - maxPolarAngle, Math.min( _PI_2 -minPolarAngle, _euler.x ) );
+
+					camera.quaternion.setFromEuler( _euler );
 
 				}
 
