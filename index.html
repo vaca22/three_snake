@@ -84,9 +84,9 @@
 			var f_length=20;
 			var f_vector= new Vector3(0,0,f_length);
 			var f_move=new Vector3(0,0,-20);
-			var f_cube_number = 5
+			var f_cube_number = 100;
 			var f_change_index=4;
-
+			const update_interval = 500;
 
 
 			let prevTime = performance.now();
@@ -240,7 +240,7 @@
 
 				boxGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colorsBox, 3 ) );
 
-				for ( let i = 0; i < 5; i ++ ) {
+				for ( let i = 0; i < f_cube_number; i ++ ) {
 					const boxMaterial = new THREE.MeshPhongMaterial( { specular: 0xffffff, flatShading: true, vertexColors: true } );
 					boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
 					const box = new THREE.Mesh( boxGeometry, boxMaterial );
@@ -273,11 +273,22 @@
 
 			var prevTime2 = performance.now();
 			function move_snake0(){
-
+				let f_future = f_change_index;
+				f_future += 1;
+				if(f_future >= objects.length) {
+					f_future = 0;
+				}
+				let f_future_box=objects.at(f_future)
 				let box=objects.at(f_change_index)
-				box.position.x += f_move.x;
-				box.position.y += f_move.y;
-				box.position.z += f_move.z;
+				box.position.x = f_future_box.position.x+ f_move.x;
+				box.position.y = f_future_box.position.y+ f_move.y;
+				box.position.z = f_future_box.position.z+ f_move.z;
+
+
+				f_change_index --;
+				if(f_change_index < 0) {
+					f_change_index = objects.length - 1;
+				}
 
 			}
 
@@ -305,7 +316,7 @@
 				requestAnimationFrame( animate );
 
 				const time = performance.now();
-				if(time-prevTime2>1000){
+				if(time-prevTime2>update_interval){
 					move_snake0()
 					prevTime2=time;
 				}
